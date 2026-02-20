@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Search as SearchIcon,
   MapPin,
@@ -51,11 +52,9 @@ const MOCK_BUSINESSES: Business[] = [
     location: "MAJOR SERTORIO 561 VL BUARQUE, 01222-001, São Paulo",
     schedule: "Ter 14-20h | Qua-Sex 10-20h | Sáb: 10-18h | Dom-Seg: fechado",
     mainImage:
-      "https://images.unsplash.com/photo-1599819834519-c90903a59fd0?w=400&h=300&fit=crop",
+      "https://d2zdpiztbgorvt.cloudfront.net/region1/br/215610/biz_photo/d2f3bc3b03f24673a7c5e7790f7745-la-barbearia-biz-photo-f5dabb18bccf423180567c7b495c91-booksy.jpeg",
     galleryImages: [
       "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=150&h=150&fit=crop",
-      "https://images.unsplash.com/photo-1510699949140-e71f86f24e7f?w=150&h=150&fit=crop",
-      "https://images.unsplash.com/photo-1535016120754-fd45c1d4a4f1?w=150&h=150&fit=crop",
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop",
     ],
     category: "Barbearias",
@@ -80,6 +79,7 @@ const MOCK_BUSINESSES: Business[] = [
 ];
 
 export function Search() {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Tudo");
   const [selectedService, setSelectedService] = useState("Corte");
@@ -253,7 +253,8 @@ export function Search() {
           {filteredBusinesses.map((business) => (
             <div
               key={business.id}
-              className="bg-white border border-[#E5E5E5] rounded-lg overflow-hidden hover:shadow-md transition-shadow flex flex-col"
+              onClick={() => navigate(`/booking/${business.id}`)}
+              className="bg-white border border-[#E5E5E5] rounded-lg overflow-hidden hover:shadow-md transition-shadow flex flex-col cursor-pointer"
             >
               {/* Main Image with Rating Badge */}
               <div className="relative w-full h-48 sm:h-56 lg:h-64 overflow-hidden">

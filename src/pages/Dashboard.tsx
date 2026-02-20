@@ -45,11 +45,11 @@ export function Dashboard() {
       <div className="p-4 lg:p-6" style={{ borderColor: COLORS.mid, borderBottomWidth: '1px' }}>
         <div className="max-w-7xl mx-auto">
           {/* Location and Notification */}
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-2">
+          <div className="flex items-center justify-end mb-6">
+            {/* <div className="flex items-center gap-2">
               <MapPin className="w-5 h-5 lg:w-6 lg:h-6" style={{ color: COLORS.accent }} />
               <span className="text-sm lg:text-base font-semibold" style={{ color: COLORS.text }}>São Paulo, SP</span>
-            </div>
+            </div> */}
             <button className="relative">
               <Bell className="w-5 h-5 lg:w-6 lg:h-6" style={{ color: COLORS.text }} />
               <span className="absolute top-0 right-0 w-2 h-2 rounded-full" style={{ backgroundColor: COLORS.danger }}></span>
