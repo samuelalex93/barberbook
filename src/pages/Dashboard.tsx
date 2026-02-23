@@ -1,5 +1,7 @@
 import { MapPin, Bell, Heart, MoreHorizontal } from 'lucide-react';
 import { COLORS } from '../constants/colors';
+import { Button, IconButton } from '../components/ui';
+import { PageHeader } from '../components/PageHeader';
 
 export function Dashboard() {
   const specialOffers = [
@@ -42,42 +44,37 @@ export function Dashboard() {
   return (
     <div style={{ backgroundColor: COLORS.light }}>
       {/* Header */}
-      <div className="p-4 lg:p-6" style={{ borderColor: COLORS.mid, borderBottomWidth: '1px' }}>
-        <div className="max-w-7xl mx-auto">
-          {/* Location and Notification */}
-          <div className="flex items-center justify-end mb-6">
-            {/* <div className="flex items-center gap-2">
-              <MapPin className="w-5 h-5 lg:w-6 lg:h-6" style={{ color: COLORS.accent }} />
-              <span className="text-sm lg:text-base font-semibold" style={{ color: COLORS.text }}>São Paulo, SP</span>
-            </div> */}
-            <button className="relative">
-              <Bell className="w-5 h-5 lg:w-6 lg:h-6" style={{ color: COLORS.text }} />
-              <span className="absolute top-0 right-0 w-2 h-2 rounded-full" style={{ backgroundColor: COLORS.danger }}></span>
-            </button>
-          </div>
-
-          {/* Search Bar */}
-          <div className="flex gap-3">
-            <div className="flex-1 flex items-center gap-2 px-4 py-3 rounded-xl" style={{ backgroundColor: COLORS.light, borderColor: COLORS.mid, borderWidth: '1px' }}>
-            <MapPin className="w-4 sm:w-5 h-4 sm:h-5 text-[#6B7280] flex-shrink-0" />
-              <input
-                type="text"
-                placeholder="Onde?"
-                className="flex-1 outline-none text-sm"
-                style={{ backgroundColor: 'transparent', color: COLORS.text }}
-              />
-            </div>
-            <button
-              className="flex items-center justify-center w-12 h-12 rounded-xl transition-colors"
-              style={{ backgroundColor: COLORS.light }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLORS.mid)}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLORS.light)}
-            >
-              <MoreHorizontal className="w-5 h-5" style={{ color: COLORS.textSecondary }} />
-            </button>
-          </div>
+      <PageHeader>
+        {/* Location and Notification */}
+        <div className="flex items-center justify-end mb-6">
+          <IconButton
+            icon={<Bell className="w-5 h-5 lg:w-6 lg:h-6" style={{ color: COLORS.text }} />}
+            variant="ghost"
+            size="md"
+            className="relative"
+          >
+            <span className="absolute top-2 right-2 w-2 h-2 rounded-full" style={{ backgroundColor: COLORS.danger }}></span>
+          </IconButton>
         </div>
-      </div>
+
+        {/* Search Bar */}
+        <div className="flex gap-3">
+          <div className="flex-1 flex items-center gap-2 px-4 py-3 rounded-xl" style={{ backgroundColor: COLORS.light, borderColor: COLORS.mid, borderWidth: '1px' }}>
+            <MapPin className="w-4 sm:w-5 h-4 sm:h-5 text-[#6B7280] flex-shrink-0" />
+            <input
+              type="text"
+              placeholder="Onde?"
+              className="flex-1 outline-none text-sm"
+              style={{ backgroundColor: 'transparent', color: COLORS.text }}
+            />
+          </div>
+          <IconButton
+            icon={<MoreHorizontal className="w-5 h-5" style={{ color: COLORS.textSecondary }} />}
+            variant="ghost"
+            size="md"
+          />
+        </div>
+      </PageHeader>
 
       {/* Content */}
       <div className="p-4 lg:p-6">
@@ -96,14 +93,13 @@ export function Dashboard() {
                 <h2 className="text-white text-3xl lg:text-4xl font-bold mb-2">Ganhe 20% de Desconto</h2>
                 <p className="text-gray-300 text-sm lg:text-base">em todos os Cortes entre 9am-5pm</p>
               </div>
-              <button 
-                className="w-fit text-white font-bold px-6 py-2 rounded-full transition-colors text-sm lg:text-base"
-                style={{ backgroundColor: COLORS.accent }}
-                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLORS.accentDark)}
-                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLORS.accent)}
+              <Button 
+                variant="primary"
+                size="md"
+                className="w-fit"
               >
                 Agendar Agora
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -111,14 +107,12 @@ export function Dashboard() {
           <div>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg lg:text-xl font-bold" style={{ color: COLORS.text }}>Ofertas Especiais</h3>
-              <button 
-                className="font-semibold text-sm lg:text-base transition-colors"
-                style={{ color: COLORS.accent }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = COLORS.accentDark)}
-                onMouseLeave={(e) => (e.currentTarget.style.color = COLORS.accent)}
+              <Button 
+                variant="tertiary"
+                size="sm"
               >
                 Ver Tudo
-              </button>
+              </Button>
             </div>
 
             {/* Offers Grid - Responsive */}
@@ -141,9 +135,12 @@ export function Dashboard() {
                   </div>
 
                   {/* Favorite Button */}
-                  <button className="absolute top-4 left-4">
-                    <Heart className="w-5 h-5 lg:w-6 lg:h-6 text-white hover:fill-white transition-all" />
-                  </button>
+                  <IconButton
+                    icon={<Heart className="w-5 h-5 lg:w-6 lg:h-6 text-white hover:fill-white transition-all" />}
+                    variant="ghost"
+                    size="md"
+                    className="absolute top-4 left-4"
+                  />
                 </div>
               ))}
             </div>

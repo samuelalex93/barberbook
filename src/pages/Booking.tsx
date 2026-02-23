@@ -9,6 +9,8 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { COLORS } from "../constants/colors";
+import { IconButton } from "../components/ui";
+import { PageHeader } from "../components/PageHeader";
 
 interface Business {
   id: number;
@@ -209,37 +211,33 @@ export function Booking() {
       style={{ backgroundColor: COLORS.light }}
     >
       {/* Header */}
-      <div className="sticky top-0 z-40 border-b border-[#E5E5E5] p-4 lg:p-6 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-start gap-3 mb-4">
-            <button
-              onClick={() => navigate(-1)}
-              className="p-2 hover:bg-gray-100 rounded-full transition-colors flex-shrink-0 mt-1"
+      <PageHeader className="bg-white">
+        <div className="flex items-start gap-3 mb-4">
+          <IconButton
+            onClick={() => navigate(-1)}
+            icon={<ArrowLeft className="w-5 h-5" />}
+            variant="secondary"
+            size="md"
+            className="mt-1"
+          />
+          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#F97316] to-[#E67E0D] flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+            {business.name.charAt(0)}
+          </div>
+          <div className="flex-1 min-w-0">
+            <h1
+              className="text-base lg:text-lg font-bold"
+              style={{ color: COLORS.text }}
             >
-              <ArrowLeft
-                className="w-5 h-5"
-                style={{ color: COLORS.text }}
-              />
-            </button>
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#F97316] to-[#E67E0D] flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
-              {business.name.charAt(0)}
-            </div>
-            <div className="flex-1 min-w-0">
-              <h1
-                className="text-base lg:text-lg font-bold"
-                style={{ color: COLORS.text }}
-              >
-                {business.name}
-              </h1>
-              <p className="text-xs lg:text-sm text-[#6B7280] line-clamp-2">
-                {business.location}
-              </p>
-            </div>
-            <div className="flex gap-2 flex-shrink-0">
-              <button
-                onClick={() => setIsFavorite(!isFavorite)}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-              >
+              {business.name}
+            </h1>
+            <p className="text-xs lg:text-sm text-[#6B7280] line-clamp-2">
+              {business.location}
+            </p>
+          </div>
+          <div className="flex gap-2 flex-shrink-0">
+            <IconButton
+              onClick={() => setIsFavorite(!isFavorite)}
+              icon={
                 <Heart
                   className="w-5 h-5"
                   style={{
@@ -247,14 +245,18 @@ export function Booking() {
                     fill: isFavorite ? COLORS.accent : "none",
                   }}
                 />
-              </button>
-              <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-                <Share2 className="w-5 h-5" style={{ color: COLORS.text }} />
-              </button>
-            </div>
+              }
+              variant="secondary"
+              size="md"
+            />
+            <IconButton
+              icon={<Share2 className="w-5 h-5" />}
+              variant="secondary"
+              size="md"
+            />
           </div>
         </div>
-      </div>
+      </PageHeader>
 
       {/* Content */}
       <div className="p-4 lg:p-6">
@@ -276,7 +278,7 @@ export function Booking() {
               profissionais possuem anos de experiência e estão sempre atualizados com as
               tendências do mercado.{" "}
               <button
-                className="font-semibold"
+                className="font-semibold transition-colors hover:opacity-80"
                 style={{ color: COLORS.accent }}
               >
                 Leia Mais...

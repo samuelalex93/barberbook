@@ -11,6 +11,8 @@ import {
   Brush,
 } from "lucide-react";
 import { COLORS } from "../constants/colors";
+import { Button, IconButton } from "../components/ui";
+import { PageHeader } from "../components/PageHeader";
 
 interface Business {
   id: number;
@@ -109,116 +111,81 @@ export function Search() {
       style={{ backgroundColor: COLORS.light }}
     >
       {/* Header Section */}
-      <div
-        className="sticky top-0 z-40 border-b border-[#E5E5E5] p-4 lg:p-6"
-        style={{ backgroundColor: COLORS.light }}
-      >
-        <div className="max-w-7xl mx-auto space-y-4">
-          {/* Location and Notification */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <MapPin className="w-5 h-5 lg:w-6 lg:h-6" style={{ color: COLORS.accent }} />
-              <span className="text-sm lg:text-base font-semibold" style={{ color: COLORS.text }}>São Paulo, SP</span>
-            </div>
-          </div>
-          {/* Search Bar */}
-          <div className="flex justify-center">
-            <div
-              className="flex items-center gap-2 sm:gap-3 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 w-full lg:w-1/2"
-              style={{
-                backgroundColor: COLORS.light,
-                borderColor: COLORS.mid,
-                borderWidth: "1px",
-              }}
-            >
-              <SearchIcon className="w-4 sm:w-5 h-4 sm:h-5 text-[#6B7280] flex-shrink-0" />
-              <input
-                type="text"
-                placeholder="Procurar serviços ou negócios"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1 outline-none text-sm sm:text-base text-[#111827] placeholder-[#9CA3AF]"
-                style={{ backgroundColor: "transparent", color: COLORS.text }}
-              />
-            </div>
-          </div>
-          {/* Categories */}
-          <div className="overflow-x-auto flex justify-center gap-2 no-scrollbar">
-            {CATEGORIES.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full whitespace-nowrap transition-colors font-medium text-xs sm:text-sm ${
-                  selectedCategory === category
-                    ? "bg-[#F97316] text-white"
-                    : "bg-[#F5F5F5] text-[#111827] hover:bg-[#E5E5E5]"
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
+      <PageHeader className="space-y-5">
+        {/* Location */}
+        <div className="flex items-center gap-2 pb-2">
+          <MapPin className="w-5 h-5 lg:w-6 lg:h-6" style={{ color: COLORS.accent }} />
+          <span className="text-sm lg:text-base font-semibold" style={{ color: COLORS.text }}>São Paulo, SP</span>
         </div>
-      </div>
+        
+        {/* Search Bar */}
+          <div className="flex-1 flex items-center gap-2 px-4 py-3 rounded-xl" style={{ backgroundColor: COLORS.light, borderColor: COLORS.mid, borderWidth: '1px' }}>
+
+          <SearchIcon className="w-4 sm:w-5 h-4 sm:h-5 text-[#6B7280] flex-shrink-0" />
+          <input
+            type="text"
+            placeholder="Procurar serviços ou negócios"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="flex-1 outline-none text-sm"
+            style={{ backgroundColor: 'transparent', color: COLORS.text }}
+          />
+        </div>
+        
+        {/* Categories */}
+        <div className="overflow-x-auto flex gap-3 sm:gap-4 no-scrollbar -mx-4 lg:-mx-6 px-4 lg:px-6 pb-2 pt-2">
+          {CATEGORIES.map((category) => (
+            <Button
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              variant={selectedCategory === category ? "primary" : "secondary"}
+              size="sm"
+              className="whitespace-nowrap"
+            >
+              {category}
+            </Button>
+          ))}
+        </div>
+      </PageHeader>
 
       <div className="p-4 lg:p-6">
-        <div className="max-w-7xl mx-auto space-y-4 lg:space-y-6">
+        <div className="max-w-7xl mx-auto space-y-8 lg:space-y-10">
           {/* Popular Services Section */}
-          <div className="mb-6 sm:mb-8">
-          <h2 className="text-base sm:text-xl font-bold text-[#111827] mb-3 sm:mb-4">
+          <div className="mb-3">
+          <h2 className="text-base sm:text-xl font-bold text-[#111827] mb-5 sm:mb-6">
             Serviços Populares
           </h2>
-          <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+          <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-3 no-scrollbar -mx-4 lg:-mx-6 px-4 lg:px-6">
             {SERVICES.map((service) => {
               const Icon = service.icon;
               return (
-                <button
+                <Button
                   key={service.name}
                   onClick={() => setSelectedService(service.name)}
-                  className={`flex items-center gap-2 px-4 lg:px-6 py-2 lg:py-3 rounded-full text-sm lg:text-base font-semibold whitespace-nowrap transition-colors ${
-                    selectedService === service.name
-                      ? "text-white"
-                      : "bg-white border-2 hover:bg-gray-50"
-                  }`}
-                  style={{
-                    backgroundColor:
-                      selectedService === service.name
-                        ? COLORS.accent
-                        : "white",
-                    borderColor:
-                      selectedService === service.name
-                        ? COLORS.accent
-                        : COLORS.mid,
-                    color:
-                      selectedService === service.name ? "white" : COLORS.text,
-                  }}
-                  onMouseEnter={(e) => {
-                    if (selectedService === service.name) {
-                      e.currentTarget.style.backgroundColor = COLORS.accentDark;
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (selectedService === service.name) {
-                      e.currentTarget.style.backgroundColor = COLORS.accent;
-                    }
-                  }}
+                  variant={selectedService === service.name ? "primary" : "secondary"}
+                  size="sm"
+                  className="whitespace-nowrap"
                 >
                   <Icon className="w-4 h-4 lg:w-5 lg:h-5" />
                   {service.name}
-                </button>
+                </Button>
               );
             })}
           </div>
         </div>
 
         {/* Filter and Sort Controls */}
-        <div className="mb-6 flex justify-center">
-          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full lg:w-1/2">
-            <button className="flex items-center justify-center sm:justify-start gap-2 px-3 sm:px-4 py-2 bg-[#F5F5F5] text-[#111827] rounded-lg hover:bg-[#E5E5E5] transition-colors font-medium text-xs sm:text-sm">
-              <Filter className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
+        <div className="mb-8 flex justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 w-full lg:w-1/2">
+            <IconButton
+              icon={<Filter className="w-3.5 sm:w-4 h-3.5 sm:h-4" />}
+              variant="secondary"
+              size="md"
+              className="flex-1 sm:flex-none"
+            >
               <span className="hidden sm:inline">Filtros</span>
               <span className="sm:hidden">Filtrar</span>
-            </button>
+            </IconButton>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
@@ -239,17 +206,17 @@ export function Search() {
         </div>
 
         {/* Results Header */}
-        <div className="mb-4 sm:mb-6">
+        <div className="mb-8 sm:mb-10">
           <h3 className="text-base sm:text-lg font-bold text-[#111827]">
             Resultados ({filteredBusinesses.length})
           </h3>
-          <p className="text-xs sm:text-sm text-[#6B7280] mt-1">
+          <p className="text-xs sm:text-sm text-[#6B7280] mt-2">
             O que afeta os resultados da busca?
           </p>
         </div>
 
         {/* Business Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
           {filteredBusinesses.map((business) => (
             <div
               key={business.id}
@@ -294,18 +261,20 @@ export function Search() {
                       {business.name}
                     </h3>
                   </div>
-                  <button
+                  <IconButton
                     onClick={() => toggleFavorite(business.id)}
-                    className="ml-1 p-1.5 sm:p-2 hover:bg-[#F5F5F5] rounded-full transition-colors flex-shrink-0"
-                  >
-                    <Heart
-                      className={`w-4 sm:w-5 h-4 sm:h-5 ${
-                        favorites.includes(business.id)
-                          ? "fill-[#F97316] text-[#F97316]"
-                          : "text-[#D4D4D4]"
-                      }`}
-                    />
-                  </button>
+                    icon={
+                      <Heart
+                        className={`w-4 sm:w-5 h-4 sm:h-5 ${
+                          favorites.includes(business.id)
+                            ? "fill-[#F97316] text-[#F97316]"
+                            : "text-[#D4D4D4]"
+                        }`}
+                      />
+                    }
+                    variant="ghost"
+                    size="md"
+                  />
                 </div>
 
                 {/* Location */}
@@ -334,12 +303,12 @@ export function Search() {
 
         {/* No Results */}
         {filteredBusinesses.length === 0 && (
-          <div className="text-center py-12 sm:py-16">
-            <SearchIcon className="w-10 sm:w-12 h-10 sm:h-12 text-[#D4D4D4] mx-auto mb-3 sm:mb-4" />
-            <p className="text-[#6B7280] font-medium text-sm sm:text-base">
+          <div className="text-center py-16 sm:py-20">
+            <SearchIcon className="w-12 sm:w-14 h-12 sm:h-14 text-[#D4D4D4] mx-auto mb-4 sm:mb-5" />
+            <p className="text-[#6B7280] font-medium text-base sm:text-lg">
               Nenhum resultado encontrado
             </p>
-            <p className="text-[#9CA3AF] text-xs sm:text-sm mt-2">
+            <p className="text-[#9CA3AF] text-sm sm:text-base mt-3">
               Tente ajustar sua busca
             </p>
           </div>

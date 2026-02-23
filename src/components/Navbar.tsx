@@ -1,9 +1,29 @@
+import { useState, useEffect } from 'react';
 import { Home, Search, Calendar, User } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 export function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Check if a modal is open
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setIsModalOpen(document.body.getAttribute('data-modal-open') === 'true');
+    };
+    
+    // Check initial state
+    handleStorageChange();
+    
+    // Monitor for changes
+    const observer = new MutationObserver(handleStorageChange);
+    observer.observe(document.body, { attributes: true, attributeFilter: ['data-modal-open'] });
+    
+    return () => observer.disconnect();
+  }, []);
+
+  if (isModalOpen) return null;
 
   const navItems = [
     { id: 1, name: 'Início', icon: Home, path: '/' },

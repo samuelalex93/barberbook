@@ -1,5 +1,7 @@
 import { Calendar, Clock, Star, ChevronRight } from 'lucide-react';
 import { COLORS } from '../constants/colors';
+import { Button, IconButton } from '../components/ui';
+import { PageHeader } from '../components/PageHeader';
 
 export function Appointments() {
   const appointments = [
@@ -49,8 +51,8 @@ export function Appointments() {
   return (
     <div style={{ backgroundColor: COLORS.light }}>
       {/* Header */}
-      <div className="sticky top-0 z-40 border-b border-[#E5E5E5] p-4 lg:p-6" style={{ backgroundColor: COLORS.light }}>
-        <div className="max-w-7xl mx-auto text-center">
+      <PageHeader>
+        <div className="text-center">
           <h1 className="text-2xl lg:text-4xl font-bold mb-1" style={{ color: COLORS.text }}>Meus Agendamentos</h1>
           <p className="text-sm lg:text-base" style={{ color: COLORS.textSecondary }}>
             Você tem{' '}
@@ -60,32 +62,33 @@ export function Appointments() {
             {' '}próximos
           </p>
         </div>
-      </div>
+      </PageHeader>
 
       {/* Content */}
       <div className="max-w-7xl mx-auto p-4 lg:p-8 space-y-4 lg:space-y-6">
         {/* Filter/Tabs */}
         <div className="flex gap-2 overflow-x-auto pb-2 lg:gap-4">
-          <button 
-            className="px-4 lg:px-6 py-2 lg:py-3 text-white rounded-full text-sm lg:text-base font-semibold whitespace-nowrap transition-colors"
-            style={{ backgroundColor: COLORS.accent }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLORS.accentDark)}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLORS.accent)}
+          <Button 
+            variant="primary"
+            size="md"
+            className="whitespace-nowrap text-sm lg:text-base"
           >
             Todos ({appointments.length})
-          </button>
-          <button 
-            className="px-4 lg:px-6 py-2 lg:py-3 bg-white rounded-full text-sm lg:text-base font-semibold border-2 whitespace-nowrap hover:bg-gray-50 transition-colors"
-            style={{ borderColor: COLORS.mid, color: COLORS.text }}
+          </Button>
+          <Button 
+            variant="secondary"
+            size="md"
+            className="whitespace-nowrap text-sm lg:text-base"
           >
             Confirmados
-          </button>
-          <button 
-            className="px-4 lg:px-6 py-2 lg:py-3 bg-white rounded-full text-sm lg:text-base font-semibold border-2 whitespace-nowrap hover:bg-gray-50 transition-colors"
-            style={{ borderColor: COLORS.mid, color: COLORS.text }}
+          </Button>
+          <Button 
+            variant="secondary"
+            size="md"
+            className="whitespace-nowrap text-sm lg:text-base"
           >
             Pendentes
-          </button>
+          </Button>
         </div>
 
         {/* Appointments List - Grid responsivo */}
@@ -156,14 +159,11 @@ export function Appointments() {
                   ))}
                   <span className="text-xs lg:text-sm ml-1" style={{ color: COLORS.textSecondary }}>({appointment.rating})</span>
                 </div>
-                <button 
-                  className="p-1 rounded-lg transition-colors"
-                  style={{ color: COLORS.accent }}
-                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLORS.accentLight)}
-                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
-                >
-                  <ChevronRight className="w-4 h-4 lg:w-5 lg:h-5" />
-                </button>
+                <IconButton
+                  icon={<ChevronRight className="w-4 h-4 lg:w-5 lg:h-5" />}
+                  variant="secondary"
+                  size="md"
+                />
               </div>
             </div>
           ))}
@@ -171,28 +171,27 @@ export function Appointments() {
 
         {/* CTA Button */}
         <div className="flex justify-center mt-6 lg:mt-8">
-          <button 
-            className="w-full lg:w-auto px-8 lg:px-12 text-white font-bold py-3 lg:py-4 rounded-full transition-colors text-base lg:text-lg"
-            style={{ backgroundColor: COLORS.accent }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLORS.accentDark)}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLORS.accent)}
+          <Button
+            variant="primary"
+            size="lg"
+            className="w-full lg:w-auto"
           >
             + Agendar Nova Consulta
-          </button>
+          </Button>
         </div>
 
         {/* Upcoming Special Offer */}
         <div className="mt-8 lg:mt-12 rounded-2xl p-4 lg:p-8 text-white max-w-2xl mx-auto w-full" style={{ background: `linear-gradient(to right, ${COLORS.accent}, #ff9247)` }}>
           <h3 className="font-bold text-base lg:text-xl mb-1 lg:mb-2">Promoção Especial!</h3>
           <p className="text-sm lg:text-base mb-3 lg:mb-4">Ganhe 15% de desconto no seu próximo corte</p>
-          <button 
-            className="w-full font-semibold py-2 lg:py-3 rounded-lg text-sm lg:text-base transition-colors"
+          <Button
+            variant="secondary"
+            size="md"
+            className="w-full text-sm lg:text-base"
             style={{ backgroundColor: 'white', color: COLORS.accent }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#f3f4f6')}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'white')}
           >
             Ver Detalhes
-          </button>
+          </Button>
         </div>
       </div>
 

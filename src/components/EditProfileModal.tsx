@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { X, User, Mail, Phone } from 'lucide-react';
 import { COLORS } from '../constants/colors';
+import { Input, Button, IconButton } from './ui';
 
 interface EditProfileModalProps {
   onClose: () => void;
@@ -36,12 +37,11 @@ export function EditProfileModal({ onClose, onSave, initialData }: EditProfileMo
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl lg:text-3xl font-bold" style={{ color: COLORS.text }}>Editar Perfil</h1>
-          <button
+          <IconButton
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-          >
-            <X className="w-6 h-6" style={{ color: COLORS.textSecondary }} />
-          </button>
+            icon={<X className="w-6 h-6" style={{ color: COLORS.textSecondary }} />}
+            variant="ghost"
+          />
         </div>
 
         {/* Form */}
@@ -59,111 +59,62 @@ export function EditProfileModal({ onClose, onSave, initialData }: EditProfileMo
           </div>
 
           {/* Name Input */}
-          <div>
-            <label className="block text-sm font-semibold mb-2" style={{ color: COLORS.text }}>
-              Nome Completo
-            </label>
-            <div className="relative">
-              <User className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5" style={{ color: COLORS.textTertiary }} />
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Seu nome completo"
-                className="w-full pl-12 pr-4 py-3 rounded-xl focus:outline-none focus:ring-2 transition-colors"
-                style={{
-                  backgroundColor: COLORS.light,
-                  borderColor: COLORS.mid,
-                  borderWidth: '1px',
-                }}
-                required
-              />
-            </div>
-          </div>
+          <Input
+            type="text"
+            label="Nome Completo"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Seu nome completo"
+            icon={<User className="w-5 h-5" style={{ color: COLORS.textTertiary }} />}
+            required
+          />
 
           {/* Email Input */}
-          <div>
-            <label className="block text-sm font-semibold mb-2" style={{ color: COLORS.text }}>
-              Email
-            </label>
-            <div className="relative">
-              <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5" style={{ color: COLORS.textTertiary }} />
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="seu@email.com"
-                className="w-full pl-12 pr-4 py-3 rounded-xl focus:outline-none focus:ring-2 transition-colors"
-                style={{
-                  backgroundColor: COLORS.light,
-                  borderColor: COLORS.mid,
-                  borderWidth: '1px',
-                }}
-                required
-              />
-            </div>
-          </div>
+          <Input
+            type="email"
+            label="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="seu@email.com"
+            icon={<Mail className="w-5 h-5" style={{ color: COLORS.textTertiary }} />}
+            required
+          />
 
           {/* Phone Input */}
-          <div>
-            <label className="block text-sm font-semibold mb-2" style={{ color: COLORS.text }}>
-              Telefone
-            </label>
-            <div className="relative">
-              <Phone className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5" style={{ color: COLORS.textTertiary }} />
-              <input
-                type="tel"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder="+55 11 98765-4321"
-                className="w-full pl-12 pr-4 py-3 rounded-xl focus:outline-none focus:ring-2 transition-colors"
-                style={{
-                  backgroundColor: COLORS.light,
-                  borderColor: COLORS.mid,
-                  borderWidth: '1px',
-                }}
-                required
-              />
-            </div>
+          <Input
+            type="tel"
+            label="Telefone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            placeholder="+55 11 98765-4321"
+            icon={<Phone className="w-5 h-5" style={{ color: COLORS.textTertiary }} />}
+            required
+          />
+
+          {/* Save and Cancel Buttons */}
+          <div className="flex gap-3">
+            <Button
+              type="submit"
+              variant="primary"
+              size="lg"
+              fullWidth
+              loading={loading}
+              className="mt-6"
+            >
+              {loading ? 'Salvando...' : 'Salvar Alterações'}
+            </Button>
+
+            <Button
+              type="button"
+              onClick={onClose}
+              variant="tertiary"
+              size="lg"
+              fullWidth
+              className="mt-6"
+            >
+              Cancelar
+            </Button>
           </div>
-
-          {/* Save Button */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full text-white font-bold py-3 rounded-xl transition-colors mt-6 disabled:opacity-70"
-            style={{ backgroundColor: COLORS.accent }}
-            onMouseEnter={(e) => {
-              if (!(e.currentTarget as HTMLButtonElement).disabled) {
-                (e.currentTarget as HTMLButtonElement).style.backgroundColor = COLORS.accentDark;
-              }
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.backgroundColor = COLORS.accent;
-            }}
-          >
-            {loading ? 'Salvando...' : 'Salvar Alterações'}
-          </button>
-
-          {/* Cancel Button */}
-          <button
-            type="button"
-            onClick={onClose}
-            className="w-full font-bold py-3 rounded-xl transition-colors"
-            style={{
-              borderColor: COLORS.accent,
-              borderWidth: '2px',
-              color: COLORS.accent,
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--color-brand-accent-light)';
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent';
-            }}
-          >
-            Cancelar
-          </button>
         </form>
       </div>
     </div>

@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronLeft, Bell, Heart, HelpCircle, LogOut, Edit2 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { COLORS } from '../constants/colors';
 import { LoginModal } from '../components/LoginModal';
 import { SignupModal } from '../components/SignupModal';
 import { EditProfileModal } from '../components/EditProfileModal';
+import { Button, IconButton } from '../components/ui';
+import { PageHeader } from '../components/PageHeader';
 
 interface ProfileUser {
   name: string;
@@ -14,7 +15,6 @@ interface ProfileUser {
 }
 
 export function Profile() {
-  const navigate = useNavigate();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -24,6 +24,21 @@ export function Profile() {
     phone: '+55 11 98765-4321',
     isLoggedIn: true,
   });
+
+  useEffect(() => {
+    const isModalOpen = showLoginModal || showSignupModal || showEditModal;
+    if (isModalOpen) {
+      document.documentElement.style.overflow = 'hidden';
+      document.body.setAttribute('data-modal-open', 'true');
+    } else {
+      document.documentElement.style.overflow = '';
+      document.body.removeAttribute('data-modal-open');
+    }
+    return () => {
+      document.documentElement.style.overflow = '';
+      document.body.removeAttribute('data-modal-open');
+    };
+  }, [showLoginModal, showSignupModal, showEditModal]);
 
   const handleLogin = (email: string, _password: string) => {
     setUser({
@@ -64,25 +79,13 @@ export function Profile() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: COLORS.light }}>
       {/* Header */}
-      <div className="p-4 lg:p-6 border-b border-[#E5E5E5]" style={{ backgroundColor: COLORS.light }}>
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between">
-            <button
-              onClick={() => navigate('/dashboard')}
-              className="flex items-center justify-center w-10 h-10 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              <ChevronLeft className="w-6 h-6 text-[#111827]" />
-            </button>
-            <h1 className="text-lg lg:text-xl font-bold text-[#111827] flex-1 text-center">
-              {user.name}
-            </h1>
-            <button className="w-10 h-10 flex items-center justify-center">
-              <Bell className="w-5 h-5 text-[#111827]" />
-              <span className="absolute w-2 h-2 bg-red-500 rounded-full top-2 right-2"></span>
-            </button>
-          </div>
+      <PageHeader>
+        <div className="flex items-center justify-between">
+          <h1 className="text-lg lg:text-xl font-bold text-[#111827] flex-1 text-center">
+            {user.name}
+          </h1>
         </div>
-      </div>
+      </PageHeader>
 
       {/* Profile Content */}
       <div className="p-4 lg:p-6 pb-32">
@@ -101,12 +104,11 @@ export function Profile() {
                       <p className="text-sm text-gray-500">{user.email}</p>
                     </div>
                   </div>
-                  <button 
+                  <IconButton
                     onClick={() => setShowEditModal(true)}
-                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                  >
-                    <Edit2 className="w-5 h-5 text-[#F97316]" />
-                  </button>
+                    icon={<Edit2 className="w-5 h-5 text-[#F97316]" />}
+                    variant="ghost"
+                  />
                 </div>
 
                 <div className="space-y-3 border-t border-[#E5E5E5] pt-4">
@@ -154,14 +156,16 @@ export function Profile() {
                 </button>
               </div>
 
-              {/* Logout Button */}
-              <button
+              <Button
                 onClick={handleLogout}
-                className="w-full flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white font-bold px-6 py-3 rounded-xl transition-colors"
+                variant="danger-outline"
+                size="lg"
+                fullWidth
+                className="gap-2"
               >
                 <LogOut className="w-5 h-5" />
                 Sair da Conta
-              </button>
+              </Button>
             </>
           ) : (
             <>
@@ -176,18 +180,22 @@ export function Profile() {
                 </p>
 
                 <div className="space-y-3">
-                  <button
+                  <Button
                     onClick={() => setShowLoginModal(true)}
-                    className="w-full bg-[#F97316] hover:bg-[#E67E0D] text-white font-bold px-6 py-3 rounded-xl transition-colors"
+                    variant="primary"
+                    size="lg"
+                    fullWidth
                   >
-                    Entrando
-                  </button>
-                  <button
+                    Entrar
+                  </Button>
+                  <Button
                     onClick={() => setShowSignupModal(true)}
-                    className="w-full border-2 border-[#F97316] text-[#F97316] font-bold px-6 py-3 rounded-xl hover:bg-orange-50 transition-colors"
+                    variant="tertiary"
+                    size="lg"
+                    fullWidth
                   >
                     Criar Conta
-                  </button>
+                  </Button>
                 </div>
               </div>
 

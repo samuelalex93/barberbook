@@ -8,7 +8,7 @@ import { Navbar } from "../components/Navbar";
 
 function RouterContent() {
   const location = useLocation();
-  const showNavbar = location.pathname !== "/asa";
+  const showNavbar = !location.pathname.startsWith("/booking");
 
   return (
     <>
