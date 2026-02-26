@@ -1,0 +1,22 @@
+# Docker Compose
+.env
+.env.local
+
+# Database backups
+backup_*.sql
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Docker
+.dockerignore
