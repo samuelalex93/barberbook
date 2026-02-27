@@ -1,4 +1,4 @@
-# Barber Book API - Exemplos de Uso
+# Studio Book API - Exemplos de Uso
 
 ## 🔐 Autenticação
 
@@ -10,7 +10,7 @@ curl -X POST http://localhost:3000/auth/register \
     "name": "João Silva",
     "email": "joao@example.com",
     "password": "senha123",
-    "role": "CLIENT"
+    "role": "CLIENTE"
   }'
 ```
 
@@ -20,7 +20,7 @@ curl -X POST http://localhost:3000/auth/register \
   "id": "uuid-123",
   "name": "João Silva",
   "email": "joao@example.com",
-  "role": "CLIENT",
+  "role": "CLIENTE",
   "accessToken": "eyJhbGc..."
 }
 ```
@@ -59,32 +59,34 @@ curl -X GET http://localhost:3000/users/role/BARBER \
 
 ### Listar usuários de uma barbearia
 ```bash
-curl -X GET http://localhost:3000/users/barbershop/{business_id} \
+curl -X GET http://localhost:3000/users/business/{business_id} \
   -H "Authorization: Bearer {token}"
 ```
 
 ### Criar novo usuário
 ```bash
 curl -X POST http://localhost:3000/users \
-  -H "Content-Type: application/json" \
+  -H "Content-Type: multipart/form-data" \
   -H "Authorization: Bearer {manager_token}" \
   -d '{
     "name": "Maria Barbeira",
     "email": "maria@example.com",
     "password": "senha123",
-    "role": "BARBER",
-    "business_id": "barbershop-uuid"
+    "role": "FUNCIONARIO",
+    "business_id": "business-uuid",
+    "avatar_image": "@/caminho/para/avatar.jpg"
   }'
 ```
 
 ### Atualizar usuário
 ```bash
 curl -X PATCH http://localhost:3000/users/{user_id} \
-  -H "Content-Type: application/json" \
+  -H "Content-Type: multipart/form-data" \
   -H "Authorization: Bearer {token}" \
   -d '{
     "name": "Novo Nome",
-    "email": "novo@example.com"
+    "email": "novo@example.com",
+    "avatar_image": "@/caminho/para/novo-avatar.png"
   }'
 ```
 
@@ -96,51 +98,117 @@ curl -X DELETE http://localhost:3000/users/{user_id} \
 
 ---
 
-## 🏢 Barbearias
+## 🏢 Negócios (Businesses)
 
-### Listar todas as barbearias
+### Listar todos os negócios
 ```bash
-curl -X GET "http://localhost:3000/barbershops?page=1&limit=10"
+curl -X GET "http://localhost:3000/businesses?page=1&limit=10"
 ```
 
-### Buscar barbearia por ID
+### Buscar negócio por ID
 ```bash
-curl -X GET http://localhost:3000/barbershops/{business_id}
+curl -X GET http://localhost:3000/businesses/{business_id}
 ```
 
-### Buscar barbearias de um dono
+### Buscar detalhes completos (negócio + endereço + horários + portfólio + reviews)
 ```bash
-curl -X GET http://localhost:3000/barbershops/owner/{owner_id}
+curl -X GET http://localhost:3000/businesses/{business_id}/details
 ```
 
-### Criar nova barbearia
+### Buscar negócios de um proprietário
 ```bash
-curl -X POST http://localhost:3000/barbershops \
-  -H "Content-Type: application/json" \
+curl -X GET http://localhost:3000/businesses/owner/{owner_id}
+```
+
+### Listar tipos de negócio
+```bash
+curl -X GET http://localhost:3000/businesses/types
+```
+
+### Criar novo negócio (com imagem de capa)
+```bash
+curl -X POST http://localhost:3000/businesses \
   -H "Authorization: Bearer {owner_token}" \
+  -H "Content-Type: multipart/form-data" \
+  -F "name=Barbearia do João" \
+  -F "description=Melhor barbearia da rua" \
+  -F "address=Rua Principal, 123" \
+  -F "phone=11999999999" \
+  -F "business_type_id={business_type_uuid}" \
+  -F "cover_image=@/caminho/para/capa.jpg"
+```
+
+### Atualizar negócio (incluindo troca de capa)
+```bash
+curl -X PATCH http://localhost:3000/businesses/{business_id} \
+  -H "Authorization: Bearer {owner_token}" \
+  -H "Content-Type: multipart/form-data" \
+  -F "name=Novo Nome da Barbearia" \
+  -F "phone=11988888888" \
+  -F "cover_image=@/caminho/para/nova-capa.png"
+```
+
+> Ao enviar uma nova `cover_image`, a imagem antiga em `/public/uploads/businesses` é removida automaticamente.
+
+### Gerenciar endereço do negócio
+```bash
+# Obter endereço
+curl -X GET http://localhost:3000/businesses/{business_id}/address
+
+# Criar/atualizar endereço
+curl -X PUT http://localhost:3000/businesses/{business_id}/address \
+  -H "Authorization: Bearer {owner_token}" \
+  -H "Content-Type: application/json" \
   -d '{
-    "name": "Barbearia do João",
-    "description": "Melhor barbearia da rua",
-    "address": "Rua Principal, 123",
-    "phone": "11999999999"
+    "street": "Rua Principal",
+    "number": "123",
+    "city": "São Paulo",
+    "state": "SP",
+    "postal_code": "01310-100"
   }'
 ```
 
-### Atualizar barbearia
+### Gerenciar horários de funcionamento
 ```bash
-curl -X PATCH http://localhost:3000/barbershops/{business_id} \
-  -H "Content-Type: application/json" \
+# Listar horários
+curl -X GET http://localhost:3000/businesses/{business_id}/hours
+
+# Criar/atualizar horário para um dia
+curl -X PUT http://localhost:3000/businesses/{business_id}/hours/SEGUNDA \
   -H "Authorization: Bearer {owner_token}" \
+  -H "Content-Type: application/json" \
   -d '{
-    "name": "Novo Nome da Barbearia",
-    "phone": "11988888888"
+    "opening_time": "09:00",
+    "closing_time": "19:00",
+    "is_open": true
   }'
 ```
 
-### Deletar barbearia
+### Gerenciar portfólio de imagens
 ```bash
-curl -X DELETE http://localhost:3000/barbershops/{business_id} \
-  -H "Authorization: Bearer {owner_token}"
+# Listar imagens
+curl -X GET http://localhost:3000/businesses/{business_id}/portfolio
+
+# Adicionar imagem ao portfólio
+curl -X POST http://localhost:3000/businesses/{business_id}/portfolio \
+  -H "Authorization: Bearer {owner_token}" \
+  -H "Content-Type: multipart/form-data" \
+  -F "title=Corte degradê" \
+  -F "description=Antes e depois do corte" \
+  -F "display_order=1" \
+  -F "image=@/caminho/para/portfolio.jpg"
+
+# Atualizar imagem do portfólio (troca a imagem física e remove a antiga)
+curl -X PATCH http://localhost:3000/businesses/{business_id}/portfolio/{image_id} \
+  -H "Authorization: Bearer {owner_token}" \
+  -H "Content-Type: multipart/form-data" \
+  -F "title=Novo título" \
+  -F "image=@/caminho/para/nova-imagem.png"
+```
+
+### Listar avaliações (reviews) de um negócio
+```bash
+curl -X GET http://localhost:3000/businesses/{business_id}/reviews
 ```
 
 ---
@@ -159,12 +227,12 @@ curl -X GET http://localhost:3000/services/{service_id}
 
 ### Listar serviços de uma barbearia
 ```bash
-curl -X GET http://localhost:3000/services/barbershop/{business_id}
+curl -X GET http://localhost:3000/services/business/{business_id}
 ```
 
 ### Criar novo serviço
 ```bash
-curl -X POST http://localhost:3000/services/barbershop/{business_id} \
+curl -X POST http://localhost:3000/services/business/{business_id} \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {owner_token}" \
   -d '{
@@ -206,9 +274,9 @@ curl -X GET "http://localhost:3000/appointments?page=1&limit=10"
 curl -X GET http://localhost:3000/appointments/{appointment_id}
 ```
 
-### Listar agendamentos de um barbeiro
+### Listar agendamentos de um proprietario
 ```bash
-curl -X GET http://localhost:3000/appointments/barber/{owner_id}
+curl -X GET http://localhost:3000/appointments/owner/{owner_id}
 ```
 
 ### Listar agendamentos de um cliente
@@ -218,12 +286,12 @@ curl -X GET http://localhost:3000/appointments/client/{client_id}
 
 ### Listar agendamentos de uma barbearia
 ```bash
-curl -X GET http://localhost:3000/appointments/barbershop/{business_id}
+curl -X GET http://localhost:3000/appointments/business/{business_id}
 ```
 
 ### Agendar um horário
 ```bash
-curl -X POST http://localhost:3000/appointments/barber/{owner_id}/barbershop/{business_id} \
+curl -X POST http://localhost:3000/appointments/owner/{owner_id}/business/{business_id} \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {client_token}" \
   -d '{
@@ -237,9 +305,9 @@ curl -X POST http://localhost:3000/appointments/barber/{owner_id}/barbershop/{bu
 ```bash
 curl -X PATCH http://localhost:3000/appointments/{appointment_id} \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer {barber_token}" \
+  -H "Authorization: Bearer {owner_token}" \
   -d '{
-    "status": "CONFIRMED"
+    "status": "CONFIRMADO"
   }'
 ```
 
@@ -278,7 +346,7 @@ curl -X DELETE http://localhost:3000/appointments/{appointment_id} \
 ```json
 {
   "sub": "user-uuid",
-  "role": "BARBER|OWNER|MANAGER|CLIENT",
+  "role": "CLIENTE|FUNCIONARIO|PROPRIETARIO|GERENTE|MEGAZORD",
   "email": "user@example.com",
   "iat": 1234567890,
   "exp": 1234571490
@@ -292,7 +360,7 @@ curl -X DELETE http://localhost:3000/appointments/{appointment_id} \
 - Emails únicos
 - Datas de agendamento válidas
 - Sem conflitos de horário
-- Barbeiro pertence à barbearia
+- Pr pertence à barbearia
 - Cliente existe no sistema
 - Serviço existe
 - Autorização por proprietário
