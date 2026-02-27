@@ -145,7 +145,7 @@ describe("UserService", () => {
     mockedRepository.exists.mockResolvedValue(false);
     mockedRepository.create.mockResolvedValue({
       ...mockUser,
-      role: UserRole.BARBEIRO,
+      role: UserRole.FUNCIONARIO,
     });
     mockedDTO.fromEntity.mockReturnValue(mockUserResponse as any);
 
@@ -172,7 +172,7 @@ describe("UserService", () => {
   it("should throw error if user is not manager", async () => {
     mockedRepository.findById.mockResolvedValue({
       ...mockUser,
-      role: UserRole.BARBEIRO,
+      role: UserRole.FUNCIONARIO,
     });
 
     await expect(
