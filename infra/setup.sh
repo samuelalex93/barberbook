@@ -28,7 +28,7 @@ echo "✓ Docker Compose found"
 echo ""
 
 # Navigate to infra directory
-cd "$(dirname "$0")/infra"
+cd "$(dirname "$0")"
 
 echo "📦 Starting Docker services..."
 docker-compose up -d

@@ -1,7 +1,7 @@
-import "dotenv";
+import "dotenv/config";
 
 export const {
-  PORT: port= "3000",
+  PORT: port = "3000",
   DB_HOST: dbHost,
   DB_PORT: dbPort,
   DB_USER: dbUser,
