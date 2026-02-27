@@ -3,15 +3,15 @@
 ## 📁 Estrutura de Pastas
 
 ```
-studiobook/
+studio-book/
 ├── infra/
 │   ├── docker-compose.yml     # Configuração dos serviços
 │   ├── README.md              # Documentação detalhada
 │   ├── Makefile               # Comandos úteis
 │   ├── init.sql               # Script de inicialização do banco
 │   └── .env.example           # Variáveis de ambiente
-├── api-baber-book/
-├── ui-barber-book/
+├── api-studio-book/
+├── ui-studio-book/
 ```
 
 ## 🚀 Quick Start
@@ -73,7 +73,7 @@ Documentação completa com:
 
 ### `init.sql`
 Script SQL para inicializar o banco com:
-- Tabelas: users, barbershops, services, appointments
+- Tabelas: users, business, services, appointments
 - Tipos ENUM: user_role, appointment_status
 - Índices para performance
 - Triggers para updated_at automático
@@ -118,7 +118,7 @@ cp infra/.env.example api-baber-book/.env
 
 ## 🔗 Conexão da UI
 
-A UI React em `ui-barber-book` já foi configurada com a variável:
+A UI React em `ui-studio-book` já foi configurada com a variável:
 
 ```env
 VITE_API_BASE_URL=http://localhost:3000
@@ -148,7 +148,7 @@ docker-compose exec postgres psql -U postgres -d studiobook
 
 ### Tabelas criadas automaticamente (via init.sql):
 - `users` - Usuários do sistema
-- `barbershops` - Barbearias
+- `business` - Business
 - `services` - Serviços oferecidos
 - `appointments` - Agendamentos
 
