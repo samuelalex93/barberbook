@@ -5,7 +5,7 @@ import { AppError } from "../../shared/errors/AppError";
 export class AuthController {
   static async register(req: Request, res: Response) {
     try {
-      const { name, email, password, role } = req.body;
+      const { name, email, password, role, business_id } = req.body; // business may be provided for owners/managers
 
       if (!name || !email || !password) {
         return res.status(400).json({ message: "Missing required fields" });

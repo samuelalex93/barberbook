@@ -5,7 +5,7 @@ import { AppError } from "../../shared/errors/AppError";
 import { UserRole } from "../user/user.entity";
 
 export class AuthService {
-  static async register(name: string, email: string, password: string, role: UserRole = UserRole.CLIENT) {
+  static async register(name: string, email: string, password: string, role: UserRole = UserRole.CLIENTE) {
     const emailExists = await UserRepository.exists(email);
     if (emailExists) {
       throw new AppError("Email already in use", 409);
@@ -18,6 +18,7 @@ export class AuthService {
       email,
       password: hashedPassword,
       role,
+      business_id: (role === UserRole.PROPRIETARIO || role === UserRole.GERENTE) ? null : undefined,
     } as any);
 
     const accessToken = generateToken(user);
