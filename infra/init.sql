@@ -2,7 +2,7 @@
 -- This script creates the initial schema for the StudioBook application
 
 -- Create ENUM types
-CREATE TYPE user_role AS ENUM ('CLIENTE', 'BARBEIRO', 'PROPRIETARIO', 'GERENTE', 'MEGAZORD');
+CREATE TYPE user_role AS ENUM ('CLIENTE', 'FUNCIONARIO', 'PROPRIETARIO', 'GERENTE', 'MEGAZORD');
 CREATE TYPE appointment_status AS ENUM ('PENDENTE', 'CONFIRMADO', 'CANCELADO', 'CONCLUIDO');
 CREATE TYPE license_type AS ENUM ('MENSAL', 'TRIMESTRAL', 'ANUAL');
 CREATE TYPE license_payment_status AS ENUM ('PENDENTE', 'PAGO', 'EXPIRADO', 'CANCELADO');
@@ -280,7 +280,7 @@ INSERT INTO categories (name, description, is_active) VALUES
 -- Insert users - Barbearia owners and staff
 INSERT INTO users (id, name, email, password, role, cpf_cnpj, is_active) VALUES
 ('11111111-1111-1111-1111-111111111111', 'Carlos Silva', 'carlos@barberbox.com', 'hashed_password_123', 'PROPRIETARIO', NULL, true),
-('11111111-1111-1111-1111-111111111112', 'João Santos', 'joao@barberbox.com', 'hashed_password_456', 'BARBEIRO', NULL, true);
+('11111111-1111-1111-1111-111111111112', 'João Santos', 'joao@barberbox.com', 'hashed_password_456', 'FUNCIONARIO', NULL, true);
 
 -- Insert users - Manicure owner
 INSERT INTO users (id, name, email, password, role, cpf_cnpj, is_active) VALUES
@@ -345,7 +345,7 @@ INSERT INTO business_hours (business_id, day_of_week, opening_time, closing_time
 
 -- Insert reviews for Barbearia
 INSERT INTO reviews (business_id, client_id, rating, comment, is_verified) VALUES
-('33333333-3333-3333-3333-333333333333', '99999999-9999-9999-9999-999999999991', 5, 'Excelente atendimento! Barbeiro muito profissional.', true),
+('33333333-3333-3333-3333-333333333333', '99999999-9999-9999-9999-999999999991', 5, 'Excelente atendimento! Pr muito profissional.', true),
 ('33333333-3333-3333-3333-333333333333', '99999999-9999-9999-9999-999999999992', 4, 'Ótimo corte, local limpo e aconchegante.', true);
 
 -- Insert reviews for Nail Studio
