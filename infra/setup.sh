@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# BarberBook Infrastructure Setup Script
+# StudioBook Infrastructure Setup Script
 # This script helps initialize the development environment
 
 set -e
 
-echo "🚀 BarberBook Infrastructure Setup"
+echo "🚀 StudioBook Infrastructure Setup"
 echo "=================================="
 echo ""
 
@@ -65,8 +65,8 @@ echo ""
 echo "🔐 Credentials:"
 echo "  • DB User:       postgres"
 echo "  • DB Password:   postgres123"
-echo "  • DB Name:       barberbook"
-echo "  • PgAdmin Email: admin@barberbook.com"
+echo "  • DB Name:       StudioBook"
+echo "  • PgAdmin Email: admin@StudioBook.com"
 echo "  • PgAdmin Pass:  admin123"
 echo ""
 echo "📝 Next steps:"

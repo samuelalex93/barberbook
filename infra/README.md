@@ -1,4 +1,4 @@
-# Infraestrutura BarberBook
+# Infraestrutura StudioBook
 
 Configuração de infraestrutura usando Docker Compose para desenvolvimento local.
 
@@ -39,25 +39,25 @@ docker-compose down -v
 
 - **Host**: `localhost`
 - **Porta**: `5432`
-- **Banco de dados**: `barberbook`
+- **Banco de dados**: `studiobook`
 - **Usuário**: `postgres`
 - **Senha**: `postgres123`
 
 #### Connection String
 
 ```
-postgresql://postgres:postgres123@localhost:5432/barberbook
+postgresql://postgres:postgres123@localhost:5432/studiobook
 ```
 
 #### Variáveis de Ambiente para API
 
 ```env
-DATABASE_URL=postgresql://postgres:postgres123@localhost:5432/barberbook
+DATABASE_URL=postgresql://postgres:postgres123@localhost:5432/studiobook
 DB_HOST=localhost
 DB_PORT=5432
 DB_USER=postgres
 DB_PASSWORD=postgres123
-DB_NAME=barberbook
+DB_NAME=studiobook
 ```
 
 ### PgAdmin
@@ -65,7 +65,7 @@ DB_NAME=barberbook
 Interface web para gerenciar o PostgreSQL.
 
 - **URL**: [http://localhost:5050](http://localhost:5050)
-- **Email**: `admin@barberbook.com`
+- **Email**: `admin@studiobook.com`
 - **Senha**: `admin123`
 
 #### Conectar Servidor no PgAdmin
@@ -74,7 +74,7 @@ Interface web para gerenciar o PostgreSQL.
 2. Faça login com as credenciais acima
 3. Clique em "Add New Server"
 4. Configure:
-   - **Name**: `BarberBook Database`
+   - **Name**: `StudioBook Database`
    - **Host**: `postgres` (nome do serviço)
    - **Port**: `5432`
    - **Username**: `postgres`
@@ -99,19 +99,19 @@ docker-compose logs -f postgres
 ### Acessar o PostgreSQL diretamente
 
 ```bash
-docker-compose exec postgres psql -U postgres -d barberbook
+docker-compose exec postgres psql -U postgres -d studiobook
 ```
 
 ### Fazer backup do banco
 
 ```bash
-docker-compose exec postgres pg_dump -U postgres barberbook > backup.sql
+docker-compose exec postgres pg_dump -U postgres studiobook > backup.sql
 ```
 
 ### Restaurar um backup
 
 ```bash
-docker-compose exec -T postgres psql -U postgres barberbook < backup.sql
+docker-compose exec -T postgres psql -U postgres studiobook < backup.sql
 ```
 
 ## 📁 Volumes
@@ -130,17 +130,17 @@ docker volume ls
 Para inspecionar um volume:
 
 ```bash
-docker volume inspect barberbook_infra_postgres_data
+docker volume inspect studiobook_infra_postgres_data
 ```
 
 ## 🌐 Network
 
-Os serviços se comunicam através da network `barberbook_network`.
+Os serviços se comunicam através da network `studiobook_network`.
 
 Para conectar outro container à mesma network:
 
 ```bash
-docker run --network barberbook_network ...
+docker run --network studiobook_network ...
 ```
 
 ## ⚙️ Customização

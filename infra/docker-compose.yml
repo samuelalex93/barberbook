@@ -3,17 +3,17 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15-alpine
-    container_name: barberbook_postgres
+    container_name: studiobook_postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres123
-      POSTGRES_DB: barberbook
+      POSTGRES_DB: studiobook
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - barberbook_network
+      - studiobook_network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -22,16 +22,16 @@ services:
 
   # pgadmin:
   #   image: dpage/pgadmin4:latest
-  #   container_name: barberbook_pgadmin
+  #   container_name: studiobook_pgadmin
   #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: admin@barberbook.com
+  #     PGADMIN_DEFAULT_EMAIL: admin@studiobook.com
   #     PGADMIN_DEFAULT_PASSWORD: admin123
   #   ports:
   #     - "5050:80"
   #   depends_on:
   #     - postgres
   #   networks:
-  #     - barberbook_network
+  #     - studiobook_network
   #   volumes:
   #     - pgadmin_data:/var/lib/pgadmin
 
@@ -42,5 +42,5 @@ volumes:
   #   driver: local
 
 networks:
-  barberbook_network:
+  studiobook_network:
     driver: bridge

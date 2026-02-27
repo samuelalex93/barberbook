@@ -1,7 +1,7 @@
 .PHONY: help up down logs ps exec-postgres backup restore clean
 
 help:
-	@echo "BarberBook Infrastructure Commands"
+	@echo "StudioBook Infrastructure Commands"
 	@echo ""
 	@echo "Usage: make [command]"
 	@echo ""
@@ -33,16 +33,16 @@ ps:
 	docker-compose ps
 
 exec-postgres:
-	docker-compose exec postgres psql -U postgres -d barberbook
+	docker-compose exec postgres psql -U postgres -d studiobook
 
 backup:
 	@echo "Creating backup..."
-	docker-compose exec postgres pg_dump -U postgres barberbook > backup_$$(date +%Y%m%d_%H%M%S).sql
+	docker-compose exec postgres pg_dump -U postgres studiobook > backup_$$(date +%Y%m%d_%H%M%S).sql
 	@echo ✓ Backup created
 
 restore:
 	@read -p "Enter backup file path: " backup_file; \
-	docker-compose exec -T postgres psql -U postgres barberbook < $$backup_file
+	docker-compose exec -T postgres psql -U postgres studiobook < $$backup_file
 	@echo ✓ Database restored
 
 clean:

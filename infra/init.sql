@@ -1,5 +1,5 @@
--- BarberBook Database Initialization Script
--- This script creates the initial schema for the BarberBook application
+-- StudioBook Database Initialization Script
+-- This script creates the initial schema for the StudioBook application
 
 -- Create ENUM types
 CREATE TYPE user_role AS ENUM ('CLIENTE', 'BARBEIRO', 'PROPRIETARIO', 'GERENTE', 'MEGAZORD');
@@ -17,6 +17,7 @@ CREATE TABLE users (
   password VARCHAR(255) NOT NULL,
   role user_role NOT NULL,
   business_id UUID,
+  cpf_cnpj VARCHAR(20),
   avatar_image VARCHAR(500),
   is_active BOOLEAN DEFAULT true,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -40,6 +41,8 @@ CREATE TABLE businesses (
   description TEXT,
   address VARCHAR(255) NOT NULL,
   phone VARCHAR(20),
+  cnpj VARCHAR(20),
+  municipal_registration VARCHAR(50),
   owner_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   business_type_id UUID NOT NULL REFERENCES business_types(id) ON DELETE RESTRICT,
   cover_image VARCHAR(500),
@@ -52,6 +55,24 @@ CREATE TABLE businesses (
 ALTER TABLE users 
 ADD CONSTRAINT fk_users_business_id 
 FOREIGN KEY (business_id) REFERENCES businesses(id) ON DELETE SET NULL;
+
+-- Business Addresses table
+CREATE TABLE business_addresses (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  business_id UUID NOT NULL REFERENCES businesses(id) ON DELETE CASCADE,
+  street VARCHAR(255) NOT NULL,
+  number VARCHAR(20) NOT NULL,
+  complement VARCHAR(255),
+  city VARCHAR(255) NOT NULL,
+  state VARCHAR(2) NOT NULL,
+  postal_code VARCHAR(20),
+  latitude DECIMAL(10, 8),
+  longitude DECIMAL(11, 8),
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(business_id)
+);
 
 -- Categories table
 CREATE TABLE categories (
@@ -168,6 +189,8 @@ CREATE INDEX idx_business_types_is_active ON business_types(is_active);
 CREATE INDEX idx_businesses_owner_id ON businesses(owner_id);
 CREATE INDEX idx_businesses_business_type_id ON businesses(business_type_id);
 CREATE INDEX idx_businesses_is_active ON businesses(is_active);
+CREATE INDEX idx_business_addresses_business_id ON business_addresses(business_id);
+CREATE INDEX idx_business_addresses_is_active ON business_addresses(is_active);
 CREATE INDEX idx_categories_is_active ON categories(is_active);
 CREATE INDEX idx_services_business_id ON services(business_id);
 CREATE INDEX idx_services_category_id ON services(category_id);
@@ -232,6 +255,9 @@ FOR EACH ROW EXECUTE FUNCTION update_timestamp();
 CREATE TRIGGER update_reviews_timestamp BEFORE UPDATE ON reviews
 FOR EACH ROW EXECUTE FUNCTION update_timestamp();
 
+CREATE TRIGGER update_business_addresses_timestamp BEFORE UPDATE ON business_addresses
+FOR EACH ROW EXECUTE FUNCTION update_timestamp();
+
 -- Seed data (optional - comment out if not needed)
 -- Insert business types
 INSERT INTO business_types (name, description, is_active) VALUES
@@ -252,13 +278,13 @@ INSERT INTO categories (name, description, is_active) VALUES
 ('Pedicure', 'Serviços de pedicure', true);
 
 -- Insert users - Barbearia owners and staff
-INSERT INTO users (id, name, email, password, role, is_active) VALUES
-('11111111-1111-1111-1111-111111111111', 'Carlos Silva', 'carlos@barberbox.com', 'hashed_password_123', 'PROPRIETARIO', true),
-('11111111-1111-1111-1111-111111111112', 'João Santos', 'joao@barberbox.com', 'hashed_password_456', 'BARBEIRO', true);
+INSERT INTO users (id, name, email, password, role, cpf_cnpj, is_active) VALUES
+('11111111-1111-1111-1111-111111111111', 'Carlos Silva', 'carlos@barberbox.com', 'hashed_password_123', 'PROPRIETARIO', NULL, true),
+('11111111-1111-1111-1111-111111111112', 'João Santos', 'joao@barberbox.com', 'hashed_password_456', 'BARBEIRO', NULL, true);
 
 -- Insert users - Manicure owner
-INSERT INTO users (id, name, email, password, role, is_active) VALUES
-('22222222-2222-2222-2222-222222222222', 'Marina Costa', 'marina@nailstudio.com', 'hashed_password_789', 'PROPRIETARIO', true);
+INSERT INTO users (id, name, email, password, role, cpf_cnpj, is_active) VALUES
+('22222222-2222-2222-2222-222222222222', 'Marina Costa', 'marina@nailstudio.com', 'hashed_password_789', 'PROPRIETARIO', NULL, true);
 
 -- Insert users - Clients
 INSERT INTO users (id, name, email, password, role, is_active) VALUES
@@ -268,15 +294,20 @@ INSERT INTO users (id, name, email, password, role, is_active) VALUES
 ('99999999-9999-9999-9999-999999999994', 'Fernanda Sousa', 'fernanda@email.com', 'hashed_password_client4', 'CLIENTE', true);
 
 -- Insert Barbearia
-INSERT INTO businesses (id, name, description, address, phone, owner_id, business_type_id, cover_image, is_active) VALUES
-('33333333-3333-3333-3333-333333333333', 'Barber Box', 'A melhor barbearia da cidade com profissionais experientes', 'Rua Principal 123, Centro', '1133334444', '11111111-1111-1111-1111-111111111111', (SELECT id FROM business_types WHERE name = 'BARBEARIA'), 'https://example.com/barber-box-cover.jpg', true);
+INSERT INTO businesses (id, name, description, address, phone, cnpj, municipal_registration, owner_id, business_type_id, cover_image, is_active) VALUES
+('33333333-3333-3333-3333-333333333333', 'Barber Box', 'A melhor barbearia da cidade com profissionais experientes', 'Rua Principal 123, Centro', '1133334444', NULL, NULL, '11111111-1111-1111-1111-111111111111', (SELECT id FROM business_types WHERE name = 'BARBEARIA'), 'https://example.com/barber-box-cover.jpg', true);
 
 -- Insert Manicure
-INSERT INTO businesses (id, name, description, address, phone, owner_id, business_type_id, cover_image, is_active) VALUES
-('44444444-4444-4444-4444-444444444444', 'Nail Studio Premium', 'Estúdio especializado em manicure e pedicure de qualidade', 'Avenida Paulista 500, Bela Vista', '1144445555', '22222222-2222-2222-2222-222222222222', (SELECT id FROM business_types WHERE name = 'PEDICURE'), 'https://example.com/nail-studio-cover.jpg', true);
+INSERT INTO businesses (id, name, description, address, phone, cnpj, municipal_registration, owner_id, business_type_id, cover_image, is_active) VALUES
+('44444444-4444-4444-4444-444444444444', 'Nail Studio Premium', 'Estúdio especializado em manicure e pedicure de qualidade', 'Avenida Paulista 500, Bela Vista', '1144445555', NULL, NULL, '22222222-2222-2222-2222-222222222222', (SELECT id FROM business_types WHERE name = 'PEDICURE'), 'https://example.com/nail-studio-cover.jpg', true);
 
 -- Update users with business_id
 UPDATE users SET business_id = '33333333-3333-3333-3333-333333333333' WHERE id = '11111111-1111-1111-1111-111111111112';
+
+-- Insert business addresses
+INSERT INTO business_addresses (business_id, street, number, complement, city, state, postal_code, latitude, longitude, is_active) VALUES
+('33333333-3333-3333-3333-333333333333', 'Rua Principal', '123', 'Centro', 'São Paulo', 'SP', '01310-100', -23.5505, -46.6333, true),
+('44444444-4444-4444-4444-444444444444', 'Avenida Paulista', '500', 'Bela Vista', 'São Paulo', 'SP', '01311-100', -23.5615, -46.6560, true);
 
 -- Insert services for Barbearia
 INSERT INTO services (name, description, price, duration_minutes, business_id, category_id, is_active) VALUES
